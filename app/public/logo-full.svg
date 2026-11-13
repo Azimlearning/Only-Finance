@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 32" width="200" height="32" fill="none" role="img" aria-label="OnlyFinance">
+  <style>
+    .a{stroke:#0f172a}.b{stroke:#0f766e}.t{fill:#0f172a}.f{fill:#0f766e}
+    text{font-family:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;font-size:22px;font-weight:600;letter-spacing:-.3px}
+    @media (prefers-color-scheme: dark){.a{stroke:#f1f5f9}.b{stroke:#2dd4bf}.t{fill:#f1f5f9}.f{fill:#2dd4bf}}
+  </style>
+  <g stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path class="a" d="M4 14a10 10 0 0 1 20 0"/>
+    <path class="b" d="M28 18a10 10 0 0 1-20 0"/>
+  </g>
+  <path class="a" d="M2 16h28" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+  <text x="38" y="23.5"><tspan class="t">Only</tspan><tspan class="f">Finance</tspan></text>
+</svg>

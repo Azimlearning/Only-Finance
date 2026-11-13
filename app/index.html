@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f7fa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f141a" media="(prefers-color-scheme: dark)" />
+    <!-- No-flash theme: runs before first paint. Default is LIGHT unless the user chose Dark or System (of_theme). -->
+    <script>
+      (function () {
+        var p = 'light';
+        try {
+          var v = localStorage.getItem('of_theme');
+          if (v === 'dark' || v === 'system' || v === 'light') p = v;
+        } catch (e) {}
+        var d = false;
+        try { d = p === 'dark' || (p === 'system' && matchMedia('(prefers-color-scheme: dark)').matches); } catch (e) {}
+        var r = document.documentElement;
+        if (d) r.classList.add('dark');
+        r.setAttribute('data-theme-pref', p);
+        var cs = document.querySelector('meta[name="color-scheme"]');
+        if (cs) cs.content = d ? 'dark' : 'light';
+        var m = document.querySelectorAll('meta[name="theme-color"]');
+        for (var i = 0; i < m.length; i++) m[i].content = d ? '#0f141a' : '#f4f7fa';
+      })();
+    </script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="OnlyFinance" />
+    <meta property="og:description" content="Only the finance you need before you pay in dollars." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="description" content="OnlyFinance: how interest rates, inflation and the exchange rate move a Malaysian SME's ringgit budget. Illustrative rates only." />
+    <!-- IBM Plex: financial/trustworthy pairing from the ui-ux-pro-max design system. Falls back to the system stack offline. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+    />
+    <title>OnlyFinance: FX budget for Malaysian SMEs</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

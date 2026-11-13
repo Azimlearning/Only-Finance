@@ -1,0 +1,355 @@
+@import "tailwindcss";
+
+/* Class-based dark variant (Tailwind 4): `dark:*` utilities apply under <html class="dark">.
+   Components mostly do not need it, they use the semantic colour utilities below, which switch by token. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---- Design tokens (design-system/MASTER.md) ----
+   Raw values live in :root (light, the default) and :root.dark (set by the no-flash script in index.html
+   and by ui/theme.ts). The @theme inline block turns them into utilities (bg-surface, text-fg-muted, ...) that
+   read the live variable, so switching theme re-colours every component with no re-render.
+   Gain/cost are teal vs amber (blue-green / orange, stays distinct under red-green colour blindness) and are
+   never the only cue: amounts also carry a +/- sign or a word. */
+@theme {
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@theme inline {
+  --color-page: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-overlay: var(--surface-overlay);
+  --color-sunken: var(--surface-sunken);
+  --color-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-primary: var(--primary);
+  --color-primary-solid: var(--primary-solid);
+  --color-accent: var(--accent);
+  --color-on-primary: var(--on-primary);
+  --color-primary-tint: var(--primary-tint);
+  --color-primary-line: var(--primary-line);
+  --color-gain: var(--gain);
+  --color-loss: var(--cost);
+  --color-cost: var(--cost);
+  --color-cost-tint: var(--cost-tint);
+  --color-cost-text: var(--cost-text);
+  --color-cost-line: var(--cost-line);
+  --color-danger: var(--danger);
+  --color-danger-tint: var(--danger-tint);
+  --color-danger-line: var(--danger-line);
+  --color-focus: var(--focus);
+  --color-scrim: var(--scrim);
+  --color-scrim-soft: var(--scrim-soft);
+  --color-tip-bg: var(--tip-bg);
+  --color-tip-fg: var(--tip-fg);
+  --color-tip-title: var(--tip-title);
+  --color-tip-fg-2: var(--tip-fg-2);
+  --color-tip-line: var(--tip-line);
+}
+
+/* ---- OnlyFinance UI base ---- */
+:root {
+  color-scheme: light;
+  /* Motion vocabulary (Emil Kowalski): strong custom curves, short durations. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Surfaces */
+  --bg: #f4f7fa;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-overlay: #ffffff;
+  --surface-sunken: #f8fafc;
+  --surface-muted: #f1f5f9;
+  --line: #e2e8f0;
+  --line-soft: #f1f5f9;
+  --line-strong: #cbd5e1;
+  --hairline: rgb(15 23 42 / 0.08);
+  --hairline-soft: rgb(15 23 42 / 0.06);
+
+  /* Text. fg-subtle is 5.1:1 on the page background (slate-500 was 4.4:1 there). */
+  --fg: #0f172a;
+  --fg-2: #334155;
+  --fg-muted: #475569;
+  --fg-subtle: #5a6a7e;
+
+  /* Brand and status. primary = teal-600 role, accent = teal-700 role (accent figures, hover). */
+  --primary: #0f766e;
+  --primary-solid: #0f766e;
+  --accent: #115e59;
+  --on-primary: #ffffff;
+  --primary-tint: #f0fdfa;
+  --primary-line: #99f6e4;
+  --gain: #0f766e;
+  --cost: #b45309;
+  --cost-tint: #fffbeb;
+  --cost-text: #92400e;
+  --cost-line: #fde68a;
+  --danger: #b91c1c;
+  --danger-tint: #fef2f2;
+  --danger-line: #fecaca;
+  --focus: #0f766e;
+  --logo-accent: #0f766e;
+
+  /* Scrims and tooltip (the tooltip inverts against the theme so it always pops). */
+  --scrim: rgb(15 23 42 / 0.55);
+  --scrim-soft: rgb(15 23 42 / 0.2);
+  --tip-bg: #0f172a;
+  --tip-fg: #e2e8f0;
+  --tip-title: #ffffff;
+  --tip-fg-2: #94a3b8;
+  --tip-line: rgb(255 255 255 / 0.1);
+  --tour-ring: #14b8a6;
+
+  /* Charts (kit.tsx CHART reads these). Colour only for gain/cost, everything else neutral + dash. */
+  --chart-teal: #0f766e;
+  --chart-amber: #b45309;
+  --chart-ink: #0f172a;
+  --chart-slate: #64748b;
+  --chart-mute: #94a3b8;
+  --chart-ppp: #475569;
+  --chart-grid: #e5eaf0;
+  --chart-axis: #cbd5e1;
+  --chart-zero: #64748b;
+  --chart-ref: #94a3b8;
+  --chart-cursor: #f1f5f9;
+
+  /* Hairline ring + soft layered shadow instead of a hard border. */
+  --shadow-card: 0 0 0 1px rgb(15 23 42 / 0.06), 0 1px 2px rgb(15 23 42 / 0.04), 0 6px 16px -6px rgb(15 23 42 / 0.06);
+  --shadow-raised: 0 0 0 1px rgb(15 23 42 / 0.06), 0 2px 4px rgb(15 23 42 / 0.05), 0 12px 28px -8px rgb(15 23 42 / 0.12);
+  --shadow-overlay: 0 0 0 1px rgb(15 23 42 / 0.08), 0 8px 16px rgb(15 23 42 / 0.08), 0 24px 48px -12px rgb(15 23 42 / 0.22);
+  --shadow-control: 0 0 0 1px rgb(15 23 42 / 0.1), 0 1px 2px rgb(15 23 42 / 0.05);
+  --shadow-tip: 0 0 0 1px rgb(255 255 255 / 0.06), 0 12px 32px -8px rgb(15 23 42 / 0.5);
+  --shadow-focus: 0 0 0 1px var(--focus), 0 0 0 4px color-mix(in srgb, var(--focus) 15%, transparent);
+  --header-h: 4.5rem; /* set from the real header height by Header.tsx */
+}
+
+/* Dark theme: deep blue-slate neutrals (no OLED black), lifted teal/amber, elevation = lighter surface + hairline.
+   Screen only, so printing in dark mode still gives the light, ink-friendly page. */
+@media screen {
+  :root.dark {
+    color-scheme: dark;
+    --bg: #0f141a;
+    --surface: #171e26;
+    --surface-raised: #1e2731;
+    --surface-overlay: #263240;
+    --surface-sunken: #12181f;
+    --surface-muted: #222c37;
+    --line: #2a3541;
+    --line-soft: #222b36;
+    --line-strong: #66768a;
+    --hairline: rgb(255 255 255 / 0.1);
+    --hairline-soft: rgb(255 255 255 / 0.07);
+
+    --fg: #e8eef4;
+    --fg-2: #cfd8e3;
+    --fg-muted: #a3b0bf;
+    --fg-subtle: #8896a6;
+
+    --primary: #2dd4bf;
+    --primary-solid: #2dd4bf;
+    --accent: #5eead4;
+    --on-primary: #042f2e;
+    --primary-tint: #12332f;
+    --primary-line: #1f6b62;
+    --gain: #2dd4bf;
+    --cost: #fbbf24;
+    --cost-tint: #3a2a0c;
+    --cost-text: #fcd34d;
+    --cost-line: #6b4a0f;
+    --danger: #fb7185;
+    --danger-tint: #3b1219;
+    --danger-line: #6b1f2c;
+    --focus: #5eead4;
+    --logo-accent: #2dd4bf;
+
+    --scrim: rgb(0 0 0 / 0.62);
+    --scrim-soft: rgb(0 0 0 / 0.45);
+    --tip-bg: #e2e8f0;
+    --tip-fg: #1e293b;
+    --tip-title: #0f172a;
+    --tip-fg-2: #475569;
+    --tip-line: rgb(15 23 42 / 0.14);
+    --tour-ring: #5eead4;
+
+    --chart-teal: #2dd4bf;
+    --chart-amber: #fbbf24;
+    --chart-ink: #e8eef4;
+    --chart-slate: #94a3b8;
+    --chart-mute: #7a8a9e;
+    --chart-ppp: #cbd5e1;
+    --chart-grid: #2a3541;
+    --chart-axis: #3a4857;
+    --chart-zero: #8896a6;
+    --chart-ref: #66768a;
+    --chart-cursor: rgb(255 255 255 / 0.05);
+
+    /* Shadows vanish on dark: a faint light hairline carries the edge, the overlay keeps a deep drop. */
+    --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.07), 0 1px 0 rgb(255 255 255 / 0.03) inset;
+    --shadow-raised: 0 0 0 1px rgb(255 255 255 / 0.08), 0 8px 20px -8px rgb(0 0 0 / 0.5);
+    --shadow-overlay: 0 0 0 1px rgb(255 255 255 / 0.1), 0 16px 40px -12px rgb(0 0 0 / 0.6);
+    --shadow-control: 0 0 0 1px var(--line-strong);
+    --shadow-tip: 0 0 0 1px rgb(15 23 42 / 0.12), 0 8px 24px rgb(0 0 0 / 0.5);
+    --shadow-focus: 0 0 0 1px var(--focus), 0 0 0 4px color-mix(in srgb, var(--focus) 25%, transparent);
+  }
+}
+
+html {
+  text-rendering: optimizeLegibility;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Figures: tabular, lining numerals so columns of ringgit amounts align. */
+.num,
+table,
+input,
+.recharts-text { font-variant-numeric: tabular-nums lining-nums; }
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+input[type="range"] { accent-color: var(--primary-solid); }
+::selection { background: var(--primary-line); color: var(--fg); }
+
+/* Surfaces (components layer, so Tailwind utilities such as focus-within:shadow-* still win) */
+@layer components {
+  .surface { background: var(--surface); box-shadow: var(--shadow-card); }
+  .surface-raised { background: var(--surface-raised); box-shadow: var(--shadow-raised); }
+  .surface-overlay { background: var(--surface-overlay); box-shadow: var(--shadow-overlay); }
+  .control { box-shadow: var(--shadow-control); }
+  /* One label style: sentence case, 13px, medium weight. */
+  .label { font-size: 13px; line-height: 1.4; font-weight: 500; color: var(--fg-muted); }
+  /* One input shell for every text field and select. */
+  .field {
+    min-height: 2.5rem;
+    border-radius: 0.5rem;
+    background: var(--surface);
+    box-shadow: var(--shadow-control);
+    transition: box-shadow 150ms var(--ease-out);
+  }
+  .field:focus-within { box-shadow: var(--shadow-focus); }
+}
+
+/* Focus-visible: one consistent ring. In the base layer so component utilities
+   (focus:outline-none + their own ring) still win where they exist. */
+@layer base {
+  button:focus-visible,
+  summary:focus-visible,
+  select:focus-visible,
+  [role="tab"]:focus-visible,
+  input[type="range"]:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Pressable elements: one shared transition + press feedback.
+   Named properties only, never `all`. Unlayered so every button is consistent. */
+button,
+summary {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease-out);
+}
+button:not(:disabled):active,
+summary:active {
+  transform: scale(0.97);
+}
+button:not(:disabled),
+summary,
+select,
+[role="tab"] { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+::placeholder { color: var(--fg-subtle); opacity: 1; }
+
+/* Tab panel enter: occasional, spatial "content changed" cue. Opacity + 4px lift. */
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.panel-enter { animation: panel-in 180ms var(--ease-out) both; }
+
+/* Popover (Explain): scales from its trigger corner (top right). */
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.pop-enter { transform-origin: top right; animation: pop-in 150ms var(--ease-out) both; }
+
+/* Tutor drawer: slides from its own edge, exits the way it entered, faster. */
+.drawer-scrim { transition: opacity 200ms var(--ease-out); opacity: 1; }
+.drawer-panel { transition: transform 240ms var(--ease-drawer); transform: translateX(0); }
+.drawer[data-state="enter"] .drawer-scrim { opacity: 0; }
+.drawer[data-state="enter"] .drawer-panel { transform: translateX(100%); }
+.drawer[data-state="exit"] .drawer-scrim { opacity: 0; transition-duration: 160ms; }
+.drawer[data-state="exit"] .drawer-panel { transform: translateX(100%); transition-duration: 200ms; transition-timing-function: var(--ease-out); }
+
+/* New chat message: short fade + lift (occasional). */
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.msg-enter { animation: msg-in 200ms var(--ease-out) both; }
+
+/* Glossary tooltip: scales out of the point nearest its trigger (--tip-origin set inline). */
+@keyframes tip-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.tip-enter { transform-origin: var(--tip-origin, 50% 0%); animation: tip-in 140ms var(--ease-out) both; }
+
+/* Tone-change confirmation toast: fade + small lift. */
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.toast-enter { animation: toast-in 200ms var(--ease-out) both; }
+
+/* Guided tour. The spotlight is a hole whose box-shadow dims the rest of the page. */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.tour-fade { animation: fade-in 200ms var(--ease-out) both; }
+.tour-hole { box-shadow: 0 0 0 2px var(--tour-ring); }
+.tour-pop[data-glide="true"] { transition: transform 280ms var(--ease-out), opacity 160ms var(--ease-out); }
+
+/* Theme switch: a short-lived attribute (set by ui/theme.ts for ~220ms, never on first load) lets surfaces
+   cross-fade. Zero cost at rest. Reduced motion gets an instant swap. */
+html[data-theme-anim] *,
+html[data-theme-anim] *::before,
+html[data-theme-anim] *::after {
+  transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out), color 160ms var(--ease-out), fill 160ms var(--ease-out), stroke 160ms var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-anim] *,
+  html[data-theme-anim] *::before,
+  html[data-theme-anim] *::after { transition: none !important; }
+}
+
+/* Reduced motion: keep opacity/colour changes (they aid comprehension), drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes panel-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes msg-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes tip-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes toast-in { from { opacity: 0; } to { opacity: 1; } }
+  .tour-pop[data-glide="true"] { transition: none; }
+  .drawer[data-state="enter"] .drawer-panel,
+  .drawer[data-state="exit"] .drawer-panel { transform: none; }
+  button:not(:disabled):active,
+  summary:active { transform: none; }
+  .animate-spin { animation-duration: 1.5s; }
+}

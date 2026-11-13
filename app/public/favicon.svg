@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <style>
+    .bg{fill:#ffffff}.a{stroke:#0f172a}.b{stroke:#0f766e}
+    @media (prefers-color-scheme: dark){.bg{fill:#0f172a}.a{stroke:#f1f5f9}.b{stroke:#2dd4bf}}
+  </style>
+  <rect class="bg" width="32" height="32" rx="7"/>
+  <g transform="translate(16 16) scale(.8) translate(-16 -16)">
+  <g stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path class="a" d="M4 14a10 10 0 0 1 20 0"/>
+    <path class="b" d="M28 18a10 10 0 0 1-20 0"/>
+  </g>
+  <path class="a" d="M2 16h28" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+  </g>
+</svg>

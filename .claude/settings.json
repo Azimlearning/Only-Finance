@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(npm --prefix app run build:*)",
+      "Bash(npm --prefix app test:*)",
+      "Bash(npm --prefix app run test:*)",
+      "Bash(npx tsc --noEmit:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Edit(./.env)",
+      "Write(./.env)",
+      "Read(./.env.local)",
+      "Edit(./.env.local)",
+      "Write(./.env.local)",
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -f:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/check_secrets.py\"", "timeout": 10 }
+        ]
+      }
+    ]
+  }
+}
